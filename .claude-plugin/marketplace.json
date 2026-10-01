@@ -1,0 +1,16 @@
+{
+  "name": "desearch",
+  "description": "Desearch plugin for AI search, X search, web search, page extraction, and X trends.",
+  "owner": {
+    "name": "Desearch AI",
+    "url": "https://www.desearch.ai"
+  },
+  "plugins": [
+    {
+      "name": "desearch",
+      "source": "./",
+      "description": "AI search, X search, web search, page extraction, and X trends.",
+      "version": "0.1.2"
+    }
+  ]
+}
