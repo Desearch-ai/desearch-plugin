@@ -1,12 +1,25 @@
 {
   "name": "desearch",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "AI search, X search, web search, page extraction, and X trends.",
   "author": {
     "name": "Desearch AI"
   },
-  "homepage": "https://www.desearch.ai/docs/guide/sdk/mcp",
-  "repository": "https://github.com/Desearch-ai/mcp-desearch",
+  "homepage": "https://desearch.ai",
+  "repository": "https://github.com/Desearch-ai/desearch-plugin",
   "license": "MIT",
-  "keywords": ["desearch", "search", "mcp"]
+  "keywords": ["desearch", "search", "mcp"],
+  "logo": "assets/logo.png",
+  "mcpServers": "./mcp.json",
+  "variables": {
+    "type": "object",
+    "properties": {
+      "DESEARCH_API_KEY": {
+        "type": "string",
+        "title": "Desearch API key from https://console.desearch.ai",
+        "description": "Desearch API key from https://console.desearch.ai"
+      }
+    },
+    "required": ["DESEARCH_API_KEY"]
+  }
 }
