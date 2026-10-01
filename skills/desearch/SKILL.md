@@ -7,7 +7,7 @@ description: Choose which Desearch MCP tool to call. Use when the task needs AI 
 
 Pick one Desearch tool from this list. Do not call a tool that is not registered.
 
-Set `DESEARCH_API_KEY` before the server starts. The plugin launches `npx -y desearch-mcp-server` and passes that variable through. These tools send read requests. They do not post, follow, delete, or change an account.
+The host passes `DESEARCH_API_KEY` into the server. The plugin launches `npx -y desearch-mcp-server@0.1.2`. These tools send read requests. They do not post, follow, delete, or change an account.
 
 ## Which tool
 

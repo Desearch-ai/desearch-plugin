@@ -7,21 +7,31 @@ Plugin bundle for Claude Code, Cursor, and Grok Build. It loads the npm package 
 - Node.js 20.18.1 or newer (Node 22 is supported; Node 18 is not), so `npx` can start the server
 - A Desearch API key from [console.desearch.ai/api-keys](https://console.desearch.ai/api-keys)
 
-Export the key before you start the client:
+The MCP config launches `npx -y desearch-mcp-server@0.1.2` and passes `DESEARCH_API_KEY` into that process. The bundle does not contain a key.
+
+Claude Code asks for the key through `userConfig`. Cursor asks for it through plugin variables. To run the server yourself:
 
 ```bash
 export DESEARCH_API_KEY="your-api-key"
+npx -y desearch-mcp-server@0.1.2
 ```
 
-The MCP config launches `npx -y desearch-mcp-server` and passes `DESEARCH_API_KEY` through from that environment. The bundle does not contain a key.
+## Data flow and privacy
+
+Search queries, URLs, and X/Twitter identifiers the user asks about are sent to the Desearch API (https://api.desearch.ai) using the user's own API key. Results return to the assistant. The plugin itself stores nothing.
+
+- Desearch: https://desearch.ai
+- Privacy policy: https://www.desearch.ai/privacy
 
 ## Claude Code
 
 Manifest: `.claude-plugin/plugin.json` ([plugin manifest](https://code.claude.com/docs/en/plugins-reference)).
 Marketplace: `.claude-plugin/marketplace.json` ([plugin marketplaces](https://code.claude.com/docs/en/plugin-marketplaces)).
-MCP config: `.mcp.json` at the plugin root ([MCP servers in plugins](https://code.claude.com/docs/en/plugins)).
+MCP config: `.mcp.json` at the plugin root ([MCP servers in plugins](https://code.claude.com/docs/en/plugins-reference#mcp-servers)).
 
-`.mcp.json` expands `${DESEARCH_API_KEY}` from the environment into the server process.
+`userConfig.DESEARCH_API_KEY` has `type` `string`, `sensitive` `true`, and `required` `true`. The title and description are `Desearch API key from https://console.desearch.ai`. Claude Code prompts for the key when the plugin is enabled and substitutes `${user_config.DESEARCH_API_KEY}` into the server `env` block ([User configuration](https://code.claude.com/docs/en/plugins-reference#user-configuration)). The Claude manifest schema has no logo field, so the logo is not listed there. Unrecognized manifest fields are warnings, and `claude plugin validate --strict` treats warnings as errors.
+
+`.mcp.json` can stay separate from `plugin.json`. Docs allow either `.mcp.json` at the plugin root or an inline `mcpServers` object. This plugin keeps the Claude server in `.mcp.json`. The `env` value is not a shell command, so `${user_config.DESEARCH_API_KEY}` is allowed there. Shell-form hook commands, monitor commands, and MCP `headersHelper` reject that placeholder.
 
 Add the marketplace, then install the plugin:
 
@@ -44,10 +54,13 @@ claude plugin validate . --strict
 
 ## Cursor
 
-Manifest: `.cursor-plugin/plugin.json` ([Cursor plugins](https://cursor.com/docs/plugins)).
-MCP config: `mcp.json` at the plugin root ([plugins reference](https://cursor.com/docs/reference/plugins)).
+Manifest: `.cursor-plugin/plugin.json` ([Cursor plugins reference](https://cursor.com/docs/reference/plugins)).
+Logo: `assets/logo.png`, referenced by the `logo` field ([Logos](https://cursor.com/docs/reference/plugins#logos)).
+MCP config: `mcp.json`, set with `"mcpServers": "./mcp.json"` so Cursor loads that file instead of `.mcp.json`.
 
-`mcp.json` sets `DESEARCH_API_KEY` from `${env:DESEARCH_API_KEY}`.
+`mcp.json` sets `DESEARCH_API_KEY` from the plugin variable `${DESEARCH_API_KEY}`. The name is declared under `variables` in `.cursor-plugin/plugin.json`. Users set the value in the dashboard under Plugins, then Configure. Plugin config does not use shell `${env:...}` placeholders ([Variables](https://cursor.com/docs/reference/plugins#variables)).
+
+User and project `mcp.json` files use a different syntax. [Config interpolation](https://cursor.com/docs/mcp) (also published at https://cursor.com/docs/context/mcp) expands `${env:NAME}`, along with `${userHome}`, `${workspaceFolder}`, `${workspaceFolderBasename}`, `${pathSeparator}`, and `${/}`. cursor.directory reads `.mcp.json`. That file is the Claude Code config and uses `${user_config.DESEARCH_API_KEY}`, which Cursor does not expand. No single placeholder works for both hosts, so the configs are split. Cursor marketplace installs should follow `mcp.json`.
 
 To try it locally, copy this repository to `~/.cursor/plugins/local/desearch`, then run Developer: Reload Window. Open Customize and confirm the Desearch skill and MCP server. Local plugin imports must be allowed.
 
@@ -57,11 +70,9 @@ To try it locally, copy this repository to `~/.cursor/plugins/local/desearch`, t
 
 ## Grok Build marketplace draft
 
-`marketplace/grok-marketplace-entry.json` is a draft catalog entry for [xai-org/plugin-marketplace](https://github.com/xai-org/plugin-marketplace). Grok Build reads `.claude-plugin/plugin.json` and `.mcp.json` from the plugin repository.
+`marketplace/grok-marketplace-entry.json` is a draft catalog entry for [xai-org/plugin-marketplace](https://github.com/xai-org/plugin-marketplace). Grok Build reads `.claude-plugin/plugin.json` and `.mcp.json` from the plugin repository. `.mcp.json` uses Claude Code substitution `${user_config.DESEARCH_API_KEY}`.
 
-Do not open that pull request yet. The entry points at `https://github.com/Desearch-ai/desearch-plugin.git`. Replace `sha` with the full 40-character commit from `git ls-remote` before anyone submits it. The placeholder is all zeros so it cannot match a real commit.
-
-After you replace `sha`, the marketplace change is a pull request that adds this object to `.grok-plugin/marketplace.json`, then:
+The entry points at `https://github.com/Desearch-ai/desearch-plugin.git`. This change does not edit that file. After `sha` matches the commit you want listed, the marketplace change is a pull request that adds this object to `.grok-plugin/marketplace.json`, then:
 
 ```bash
 python3 scripts/generate-plugin-index.py
