@@ -1,6 +1,6 @@
 {
   "name": "desearch",
-  "description": "AI search, X search, web search, page extraction, and X trends.",
+  "description": "Desearch MCP server and skill for AI agents: AI search, X search and web search, plus page extraction and X data tools (15 tools). Bring your own Desearch API key from console.desearch.ai.",
   "category": "development",
   "source": {
     "source": "url",

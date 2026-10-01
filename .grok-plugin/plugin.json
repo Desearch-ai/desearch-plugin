@@ -1,0 +1,15 @@
+{
+  "name": "desearch",
+  "version": "0.1.4",
+  "description": "Desearch MCP server and skill for AI agents: AI search, X search and web search, plus page extraction and X data tools (15 tools). Bring your own Desearch API key from console.desearch.ai.",
+  "author": {
+    "name": "Desearch AI",
+    "url": "https://www.desearch.ai"
+  },
+  "homepage": "https://desearch.ai",
+  "repository": "https://github.com/Desearch-ai/desearch-plugin",
+  "license": "MIT",
+  "keywords": ["desearch", "search", "mcp"],
+  "skills": "./skills/desearch",
+  "mcpServers": "./mcp.json"
+}

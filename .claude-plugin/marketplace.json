@@ -10,7 +10,7 @@
       "name": "desearch",
       "source": "./",
       "description": "AI search, X search, web search, page extraction, and X trends.",
-      "version": "0.1.3"
+      "version": "0.1.4"
     }
   ]
 }
