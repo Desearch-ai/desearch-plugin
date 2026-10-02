@@ -7,13 +7,13 @@ Plugin bundle for Claude Code, Cursor, and Grok Build. It loads the npm package 
 - Node.js 20.18.1 or newer (Node 22 is supported; Node 18 is not), so `npx` can start the server
 - A Desearch API key from [console.desearch.ai/api-keys](https://console.desearch.ai/api-keys)
 
-The MCP config launches `npx -y desearch-mcp-server@0.1.2` and passes `DESEARCH_API_KEY` into that process. The bundle does not contain a key.
+The MCP config launches `npx -y desearch-mcp-server@0.1.3` and passes `DESEARCH_API_KEY` into that process. The bundle does not contain a key.
 
 Claude Code asks for the key through `userConfig`. Cursor asks for it through plugin variables. To run the server yourself:
 
 ```bash
 export DESEARCH_API_KEY="your-api-key"
-npx -y desearch-mcp-server@0.1.2
+npx -y desearch-mcp-server@0.1.3
 ```
 
 ## Data flow and privacy
