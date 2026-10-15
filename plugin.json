@@ -1,0 +1,18 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "desearch",
+  "version": "0.1.6",
+  "description": "AI search, X search, web search, page extraction, and X trends.",
+  "author": {
+    "name": "Desearch AI",
+    "url": "https://www.desearch.ai"
+  },
+  "homepage": "https://desearch.ai",
+  "repository": "https://github.com/Desearch-ai/desearch-plugin",
+  "license": "MIT",
+  "keywords": [
+    "desearch",
+    "search",
+    "mcp"
+  ]
+}
