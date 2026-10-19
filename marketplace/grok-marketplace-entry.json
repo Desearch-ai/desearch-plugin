@@ -5,7 +5,7 @@
   "source": {
     "source": "url",
     "url": "https://github.com/Desearch-ai/desearch-plugin.git",
-    "sha": "c610ee183c9db5ff3266ea968af67b9d69aff6d9"
+    "sha": "277affcb9c386fe4f1c928b2fe605df12191c96b"
   },
   "homepage": "https://www.desearch.ai",
   "keywords": ["desearch", "bittensor subnet 22"],
