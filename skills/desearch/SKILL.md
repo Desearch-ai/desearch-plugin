@@ -7,7 +7,7 @@ description: Choose which Desearch MCP tool to call. Use when the task needs AI 
 
 Pick one Desearch tool from this list. Do not call a tool that is not registered.
 
-The host passes `DESEARCH_API_KEY` into the server. The plugin launches `npx -y desearch-mcp-server@0.2.4`. The search, page, and X tools send read requests. They do not post, follow, delete, or change an account. `people-search` starts a billed background search, and `people-search-control` pauses, resumes, or cancels one. For People Search, follow the `desearch-people-search` skill.
+The host passes `DESEARCH_API_KEY` into the server. The plugin launches `npx -y desearch-mcp-server@0.3.0`. The search, page, and X tools send read requests. They do not post, follow, delete, or change an account. `people-search` starts a billed background search, and `people-search-control` pauses, resumes, or cancels one. For People Search, follow the `desearch-people-search` skill.
 
 ## Which tool
 

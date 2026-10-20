@@ -10,7 +10,7 @@
       "name": "desearch",
       "source": "./",
       "description": "AI search, X search, web search, page extraction, X trends, and People Search for finding people and creators on X, YouTube, LinkedIn, and TikTok.",
-      "version": "0.2.0"
+      "version": "0.2.1"
     }
   ]
 }
