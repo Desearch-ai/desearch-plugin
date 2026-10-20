@@ -7,13 +7,13 @@ Plugin bundle for Claude Code, Cursor, and Grok Build. It loads the npm package 
 - Node.js 20.18.1 or newer (Node 22 is supported; Node 18 is not), so `npx` can start the server
 - A Desearch API key from [console.desearch.ai/api-keys](https://console.desearch.ai/api-keys)
 
-The MCP config launches `npx -y desearch-mcp-server@0.3.0` and passes `DESEARCH_API_KEY` into that process. The bundle does not contain a key.
+The MCP config launches `npx -y desearch-mcp-server@0.3.3` and passes `DESEARCH_API_KEY` into that process. The bundle does not contain a key.
 
 Claude Code asks for the key through `userConfig`. Cursor asks for it through plugin variables. To run the server yourself:
 
 ```bash
 export DESEARCH_API_KEY="your-api-key"
-npx -y desearch-mcp-server@0.3.0
+npx -y desearch-mcp-server@0.3.3
 ```
 
 ## Data flow and privacy
@@ -70,7 +70,7 @@ To try it locally, copy this repository to `~/.cursor/plugins/local/desearch`, t
 
 ## Skills
 
-`skills/desearch/SKILL.md` tells the agent which Desearch tool to call. It lists only the tools the server registers (22 in 0.3.0). `ai-search` `tools` uses the short ids `web`, `twitter`, `arxiv`, `wikipedia`, `hackernews`, and `reddit`. `youtube` is not accepted. The default is `web` and `twitter`.
+`skills/desearch/SKILL.md` tells the agent which Desearch tool to call. It lists only the tools the server registers (22 in 0.3.3). `ai-search` `tools` uses the short ids `web`, `twitter`, `arxiv`, `wikipedia`, `hackernews`, and `reddit`. `youtube` is not accepted. The default is `web` and `twitter`.
 
 `skills/desearch-people-search/SKILL.md` covers the five People Search tools: `people-search` (billed), `people-search-status`, `people-search-control`, `people-search-tasks`, and `people-profiles`. It tells the agent to check the profiles library first, confirm the reservation with the user, send an `idempotency_key`, and poll status with the returned cursor. Prices and per-search minimums are listed in the skill.
 
