@@ -7,7 +7,7 @@ description: Find people and creators on X, YouTube, LinkedIn, or TikTok who mat
 
 People Search returns people, not posts. Describe who you want in plain language, for example "Skincare creators who review sunscreen". Desearch searches public posts, videos, and profiles on one platform, reads each matching profile, and scores how well each person fits. Each person comes with a fit score, why they matched, their audience, and public contacts and links. Public data only.
 
-The plugin launches `npx -y desearch-mcp-server@0.3.0`, which registers the five tools below. For posts that match a keyword, use `x-search` or `ai-search` instead.
+The plugin launches `npx -y desearch-mcp-server@0.3.3`, which registers the five tools below. For posts that match a keyword, use `x-search` or `ai-search` instead.
 
 ## Billing
 
