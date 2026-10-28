@@ -1,26 +1,26 @@
 # Desearch plugin
 
-Plugin bundle for Claude Code, Cursor, and Grok Build. It loads the npm package `desearch-mcp-server`. The tools call Desearch for AI search, X search, web search, page extraction, X trends, and People Search (finding people and creators on X, YouTube, LinkedIn, and TikTok). This repository is the plugin root. It does not publish the server.
+Plugin bundle for Claude Code, Cursor, and Grok Build. It loads the npm package `desearch-mcp-server`. The tools call Desearch for AI search, X search, web search, page extraction, X trends, People Search (finding people and creators on X, YouTube, LinkedIn, and TikTok), and Company Search (finding companies, or enriching domains you have, with their public contacts and leaders). This repository is the plugin root. It does not publish the server.
 
 ## Requirements
 
 - Node.js 20.18.1 or newer (Node 22 is supported; Node 18 is not), so `npx` can start the server
 - A Desearch API key from [console.desearch.ai/api-keys](https://console.desearch.ai/api-keys)
 
-The MCP config launches `npx -y desearch-mcp-server@0.3.3` and passes `DESEARCH_API_KEY` into that process. The bundle does not contain a key.
+The MCP config launches `npx -y desearch-mcp-server@0.4.0` and passes `DESEARCH_API_KEY` into that process. The bundle does not contain a key.
 
 Claude Code asks for the key through `userConfig`. Cursor asks for it through plugin variables. To run the server yourself:
 
 ```bash
 export DESEARCH_API_KEY="your-api-key"
-npx -y desearch-mcp-server@0.3.3
+npx -y desearch-mcp-server@0.4.0
 ```
 
 ## Data flow and privacy
 
-Search queries, URLs, X/Twitter identifiers, and People Search descriptions the user asks about are sent to the Desearch API (https://api.desearch.ai) using the user's own API key. Results return to the assistant. People Search results are public profile data (name, handle, bio, audience, public links, and contacts such as an email listed in a bio); Desearch keeps them in the user's account for 30 days after a search ends. The plugin itself stores nothing.
+Search queries, URLs, X/Twitter identifiers, People Search descriptions, and Company Search descriptions and domains the user asks about are sent to the Desearch API (https://api.desearch.ai) using the user's own API key. Results return to the assistant. People Search results are public profile data (name, handle, bio, audience, public links, and contacts such as an email listed in a bio). Company Search results are public company data: what a company publishes on its own site, what web search returns, and public LinkedIn profiles of its leaders, including emails inferred from the company's address pattern (marked `source: inferred`). Desearch keeps both in the user's account for 30 days after a task ends. The plugin itself stores nothing.
 
-Most tools are billed per request. `people-search` is different: it starts a background search that reserves `count` people at the platform's per-person price and settles to the people it delivers. A search that finds no one is free. Status, results, task control, and the profiles library are free.
+Most tools are billed per request. `people-search` is different: it starts a background search that reserves `count` people at the platform's per-person price and settles to the people it delivers. A search that finds no one is free. `company-search` and `company-enrich` work the same way per company: they reserve `count` companies (Company Search) or one company per domain (Company Enrich) and settle to the companies they deliver; a task that delivers none is free. Status, results, task control, task lists, and the profiles library are free.
 
 - Desearch: https://desearch.ai
 - Privacy policy: https://www.desearch.ai/privacy
@@ -70,15 +70,19 @@ To try it locally, copy this repository to `~/.cursor/plugins/local/desearch`, t
 
 ## Skills
 
-`skills/desearch/SKILL.md` tells the agent which Desearch tool to call. It lists only the tools the server registers (22 in 0.3.3). `ai-search` `tools` uses the short ids `web`, `twitter`, `arxiv`, `wikipedia`, `hackernews`, and `reddit`. `youtube` is not accepted. The default is `web` and `twitter`.
+`skills/desearch/SKILL.md` tells the agent which Desearch tool to call. It lists only the tools the server registers (31 in 0.4.0). `ai-search` `tools` uses the short ids `web`, `twitter`, `arxiv`, `wikipedia`, `hackernews`, and `reddit`. `youtube` is not accepted. The default is `web` and `twitter`.
 
-`skills/desearch-people-search/SKILL.md` covers the five People Search tools: `people-search` (billed), `people-search-status`, `people-search-control`, `people-search-tasks`, and `people-profiles`. It tells the agent to check the profiles library first, confirm the reservation with the user, send an `idempotency_key`, and poll status with the returned cursor. Prices and per-search minimums are listed in the skill.
+`skills/desearch-people-search/SKILL.md` covers the seven People Search tools: `people-search` (billed), `people-search-status`, `people-search-pause`, `people-search-resume`, `people-search-cancel`, `people-search-tasks`, and `people-profiles`. It tells the agent to check the profiles library first, confirm the reservation with the user, send an `idempotency_key`, and poll status with the returned cursor. Prices and per-search minimums are listed in the skill.
+
+`skills/desearch-company-search/SKILL.md` covers the seven Company Search tools: `company-search` and `company-enrich` (billed), `company-search-status`, `company-search-pause`, `company-search-resume`, `company-search-cancel`, and `company-search-tasks`. It tells the agent to check the user's earlier tasks first, confirm the reservation, send an `idempotency_key`, poll status with the returned cursor, and read every company once more after the task ends, because later stages fill companies in. Prices and per-task minimums are listed in the skill.
+
+desearch-mcp-server 0.4.0 replaced `people-search-control` with `people-search-pause`, `people-search-resume`, and `people-search-cancel`, so the skills name those three tools.
 
 ## Grok Build
 
 Manifest: `.grok-plugin/plugin.json`.
 MCP config: `mcp.json`, set with `"mcpServers": "./mcp.json"`. A string path replaces the default `.mcp.json` load, so Grok Build reads `${DESEARCH_API_KEY}` from `mcp.json` instead of `${user_config.DESEARCH_API_KEY}`.
-Skills: `"skills": "./skills/desearch"`. That path points at the skill directory, and the default `skills/` scan still applies, so `skills/desearch-people-search` loads too.
+Skills: `"skills": "./skills/desearch"`. That path points at the skill directory, and the default `skills/` scan still applies, so `skills/desearch-people-search` and `skills/desearch-company-search` load too.
 
 Export the key in your environment, then install:
 

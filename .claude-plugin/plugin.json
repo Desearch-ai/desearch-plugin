@@ -1,8 +1,8 @@
 {
   "name": "desearch",
   "displayName": "Desearch",
-  "version": "0.2.2",
-  "description": "AI search, X search, web search, page extraction, X trends, and People Search for finding people and creators on X, YouTube, LinkedIn, and TikTok.",
+  "version": "0.3.0",
+  "description": "AI search, X search, web search, page extraction, X trends, People Search for finding people and creators on X, YouTube, LinkedIn, and TikTok, and Company Search for finding companies and their public contacts and leaders.",
   "author": {
     "name": "Desearch AI",
     "url": "https://www.desearch.ai"

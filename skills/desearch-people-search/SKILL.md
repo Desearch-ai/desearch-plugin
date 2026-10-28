@@ -7,7 +7,7 @@ description: Find people and creators on X, YouTube, LinkedIn, or TikTok who mat
 
 People Search returns people, not posts. Describe who you want in plain language, for example "Skincare creators who review sunscreen". Desearch searches public posts, videos, and profiles on one platform, reads each matching profile, and scores how well each person fits. Each person comes with a fit score, why they matched, their audience, and public contacts and links. Public data only.
 
-The plugin launches `npx -y desearch-mcp-server@0.3.3`, which registers the five tools below. For posts that match a keyword, use `x-search` or `ai-search` instead.
+The plugin launches `npx -y desearch-mcp-server@0.4.0`, which registers the seven tools below. For companies rather than people, use the `desearch-company-search` skill. For posts that match a keyword, use `x-search` or `ai-search` instead.
 
 ## Billing
 
@@ -38,7 +38,9 @@ Status, results, task control, the task list, and the profiles library are free.
   - `linkedin`: `min_followers`, `max_followers`, `countries`, `keywords`, `exclude_keywords`
   - `tiktok`: `min_followers`, `max_followers`, `require_contact`, `keywords`, `exclude_keywords`
 - **People Search Status** (`people-search-status`): Status, stage, progress, cost, and a page of people for one task. Arguments: `task_id` (required), `cursor` (optional, the previous `next_cursor`), `limit` (optional, 1 to 100, default 25), `include_people` (optional, `false` reads only status and cost).
-- **Control People Search** (`people-search-control`): Arguments: `task_id` and `action` (required: `pause`, `resume`, `cancel`). Pause lets a running search finish its current batch first; a search paused for more than 7 days is cancelled. Resume is not charged again. Cancel cannot be undone; the user pays only for the people already delivered.
+- **Pause People Search** (`people-search-pause`): Argument: `task_id` (required). Pause lets a running search finish its current batch first; a search paused for more than 7 days is cancelled.
+- **Resume People Search** (`people-search-resume`): Argument: `task_id` (required). Resume is not charged again and works only on a paused search.
+- **Cancel People Search** (`people-search-cancel`): Argument: `task_id` (required). Cancel cannot be undone; the user pays only for the people already delivered.
 - **List People Search Tasks** (`people-search-tasks`): The user's searches, newest first. Arguments: `platform`, `status` (list, for example `["running", "paused"]`), `limit` (1 to 100), `cursor`, all optional. A new search is refused with 429 while too many are queued, running, or paused.
 - **List People Found** (`people-profiles`): Everyone the user's searches found on one platform, one entry per person, with the search that found them (`found_by`). Arguments: `platform` (required), `q`, `sort` (`score`, `recent`, `audience`), `limit` (1 to 200), `cursor`, `has` (list of `email`, `website`, `x`, `linkedin`, `instagram`, `youtube`, `tiktok`), `min_audience`, `max_audience`, `min_score`, `location`, `verified` (X and TikTok only). People from searches that ended more than 30 days ago are left out.
 
