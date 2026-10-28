@@ -1,6 +1,6 @@
 {
   "name": "desearch",
-  "description": "Desearch plugin for AI search, X search, web search, page extraction, X trends, and People Search.",
+  "description": "Desearch plugin for AI search, X search, web search, the Search API, page extraction, X trends, public TikTok, Facebook, and Instagram data, and People Search.",
   "owner": {
     "name": "Desearch AI",
     "url": "https://www.desearch.ai"
@@ -9,8 +9,8 @@
     {
       "name": "desearch",
       "source": "./",
-      "description": "AI search, X search, web search, page extraction, X trends, and People Search for finding people and creators on X, YouTube, LinkedIn, and TikTok.",
-      "version": "0.2.2"
+      "description": "AI search, X search, web search, the Search API, page extraction, X trends, public TikTok, Facebook, and Instagram data, and People Search for finding people and creators on X, YouTube, LinkedIn, and TikTok.",
+      "version": "0.3.0"
     }
   ]
 }

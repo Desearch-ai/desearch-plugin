@@ -1,14 +1,14 @@
 {
   "name": "desearch",
-  "version": "0.2.1",
-  "description": "AI search, X search, web search, page extraction, X trends, and People Search for finding people and creators on X, YouTube, LinkedIn, and TikTok.",
+  "version": "0.3.0",
+  "description": "AI search, X search, web search, the Search API, page extraction, X trends, public TikTok, Facebook, and Instagram data, and People Search for finding people and creators on X, YouTube, LinkedIn, and TikTok.",
   "author": {
     "name": "Desearch AI"
   },
   "homepage": "https://desearch.ai",
   "repository": "https://github.com/Desearch-ai/desearch-plugin",
   "license": "MIT",
-  "keywords": ["desearch", "search", "mcp"],
+  "keywords": ["desearch", "search", "mcp", "search-api", "tiktok", "facebook", "instagram"],
   "logo": "assets/logo.png",
   "mcpServers": "./mcp.json",
   "variables": {

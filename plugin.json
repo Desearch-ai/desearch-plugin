@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "desearch",
-  "version": "0.2.1",
-  "description": "AI search, X search, web search, page extraction, X trends, and People Search for finding people and creators on X, YouTube, LinkedIn, and TikTok.",
+  "version": "0.3.0",
+  "description": "AI search, X search, web search, the Search API, page extraction, X trends, public TikTok, Facebook, and Instagram data, and People Search for finding people and creators on X, YouTube, LinkedIn, and TikTok.",
   "author": {
     "name": "Desearch AI",
     "url": "https://www.desearch.ai"
@@ -13,6 +13,10 @@
   "keywords": [
     "desearch",
     "search",
-    "mcp"
+    "mcp",
+    "search-api",
+    "tiktok",
+    "facebook",
+    "instagram"
   ]
 }

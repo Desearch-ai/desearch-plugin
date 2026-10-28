@@ -1,29 +1,52 @@
 # Desearch plugin
 
-Plugin bundle for Claude Code, Cursor, and Grok Build. It loads the npm package `desearch-mcp-server`. The tools call Desearch for AI search, X search, web search, page extraction, X trends, and People Search (finding people and creators on X, YouTube, LinkedIn, and TikTok). This repository is the plugin root. It does not publish the server.
+Plugin bundle for Claude Code, Cursor, and Grok Build. It loads the npm package `desearch-mcp-server`. The tools call Desearch for AI search, X search, web search, the Search API, page extraction, X trends, public TikTok, Facebook, and Instagram data, and People Search (finding people and creators on X, YouTube, LinkedIn, and TikTok). This repository is the plugin root. It does not publish the server.
+
+> **Release gate for plugin 0.3.0:** this version pins `desearch-mcp-server@0.4.0`. Do not merge or release it until `desearch-mcp-server@0.4.0` is published on npm. Until then `npx -y desearch-mcp-server@0.4.0` fails and the Desearch server does not start in any host. Check with `npm view desearch-mcp-server@0.4.0 version`.
+>
+> Server 0.4.0 adds `search-api`, `tiktok`, `facebook`, `instagram`, and `people-search-export`, and replaces `people-search-control` with `people-search-pause`, `people-search-resume`, and `people-search-cancel` (no alias). The skills name the new tools.
 
 ## Requirements
 
 - Node.js 20.18.1 or newer (Node 22 is supported; Node 18 is not), so `npx` can start the server
 - A Desearch API key from [console.desearch.ai/api-keys](https://console.desearch.ai/api-keys)
 
-The MCP config launches `npx -y desearch-mcp-server@0.3.3` and passes `DESEARCH_API_KEY` into that process. The bundle does not contain a key.
+The MCP config launches `npx -y desearch-mcp-server@0.4.0` and passes `DESEARCH_API_KEY` into that process. The bundle does not contain a key.
 
 Claude Code asks for the key through `userConfig`. Cursor asks for it through plugin variables. To run the server yourself:
 
 ```bash
 export DESEARCH_API_KEY="your-api-key"
-npx -y desearch-mcp-server@0.3.3
+npx -y desearch-mcp-server@0.4.0
 ```
 
 ## Data flow and privacy
 
-Search queries, URLs, X/Twitter identifiers, and People Search descriptions the user asks about are sent to the Desearch API (https://api.desearch.ai) using the user's own API key. Results return to the assistant. People Search results are public profile data (name, handle, bio, audience, public links, and contacts such as an email listed in a bio); Desearch keeps them in the user's account for 30 days after a search ends. The plugin itself stores nothing.
+Search queries, URLs, X/Twitter, TikTok, Facebook, and Instagram identifiers (usernames, post and profile IDs, hashtags), and People Search descriptions the user asks about are sent to the Desearch API (https://api.desearch.ai) using the user's own API key. Results return to the assistant. People Search results are public profile data (name, handle, bio, audience, public links, and contacts such as an email listed in a bio); Desearch keeps them in the user's account for 30 days after a search ends. The plugin itself stores nothing.
 
-Most tools are billed per request. `people-search` is different: it starts a background search that reserves `count` people at the platform's per-person price and settles to the people it delivers. A search that finds no one is free. Status, results, task control, and the profiles library are free.
+Most tools are billed per request. `people-search` is different: it starts a background search that reserves `count` people at the platform's per-person price and settles to the people it delivers. A search that finds no one is free. Status, results, pause, resume, cancel, the task list, the profiles library, and `people-search-export` are free.
 
 - Desearch: https://desearch.ai
 - Privacy policy: https://www.desearch.ai/privacy
+
+## Tools
+
+`desearch-mcp-server@0.4.0` registers 29 tools. The search, page, X, TikTok, Facebook, and Instagram tools only read public data.
+
+| Group | Tools |
+| --- | --- |
+| AI and web search | `ai-search`, `search`, `fetch`, `web-search`, `search-api`, `web-links-search` |
+| Page extraction | `extract`, `web-crawl` (legacy route; prefer `extract`) |
+| X | `x-search`, `x-links-search`, `x-posts-by-urls`, `x-post-by-id`, `x-posts-by-user`, `x-user-posts`, `x-user-replies`, `x-post-replies`, `x-post-retweeters`, `x-trends` |
+| TikTok, Facebook, Instagram | `tiktok`, `facebook`, `instagram` |
+| People Search | `people-search` (billed), `people-search-status`, `people-search-pause`, `people-search-resume`, `people-search-cancel`, `people-search-tasks`, `people-profiles`, `people-search-export` |
+
+New in server 0.4.0:
+
+- `search-api`: ranked web pages, each with the passage that best matches the query (`POST /search`). Optional `mode` (`fast` or `balanced`), `count` (10, 15, or 20), date range, `highlights`, and `page_text` for each page's full text.
+- `tiktok`, `facebook`, `instagram`: public data for each platform. `action` picks the route (for example `search`, `post`, `profile`, `profile_posts`, `comments`, `hashtag`; TikTok also has `trending`, Instagram has `media` instead of `post`). List actions return `results` and `next_cursor`; pass `next_cursor` back unchanged as `cursor` with the same action and target for the next page. Facebook `search` and `hashtag` return Meta Ad Library ads, not organic posts.
+- `people-search-export`: the people found by one search (`task_id`) or on one platform (`platform`), as CSV or JSON Lines text, up to `max_rows` rows (1 to 1000, default 100). Free.
+- `people-search-pause`, `people-search-resume`, `people-search-cancel`: replace `people-search-control`.
 
 ## Claude Code
 
@@ -70,9 +93,9 @@ To try it locally, copy this repository to `~/.cursor/plugins/local/desearch`, t
 
 ## Skills
 
-`skills/desearch/SKILL.md` tells the agent which Desearch tool to call. It lists only the tools the server registers (22 in 0.3.3). `ai-search` `tools` uses the short ids `web`, `twitter`, `arxiv`, `wikipedia`, `hackernews`, and `reddit`. `youtube` is not accepted. The default is `web` and `twitter`.
+`skills/desearch/SKILL.md` tells the agent which Desearch tool to call. It lists only the tools the server registers (29 in 0.4.0), including the `action` values and cursor paging for `tiktok`, `facebook`, and `instagram`. `ai-search` `tools` uses the short ids `web`, `twitter`, `arxiv`, `wikipedia`, `hackernews`, and `reddit`. `youtube` is not accepted. The default is `web` and `twitter`.
 
-`skills/desearch-people-search/SKILL.md` covers the five People Search tools: `people-search` (billed), `people-search-status`, `people-search-control`, `people-search-tasks`, and `people-profiles`. It tells the agent to check the profiles library first, confirm the reservation with the user, send an `idempotency_key`, and poll status with the returned cursor. Prices and per-search minimums are listed in the skill.
+`skills/desearch-people-search/SKILL.md` covers the eight People Search tools: `people-search` (billed), `people-search-status`, `people-search-pause`, `people-search-resume`, `people-search-cancel`, `people-search-tasks`, `people-profiles`, and `people-search-export`. It tells the agent to check the profiles library first, confirm the reservation with the user, send an `idempotency_key`, poll status with the returned cursor, and export with `people-search-export` when the user wants a file. Prices and per-search minimums are listed in the skill.
 
 ## Grok Build
 
