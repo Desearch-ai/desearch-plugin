@@ -4,7 +4,7 @@
     "desearch": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "desearch-mcp-server@0.3.3"],
+      "args": ["-y", "desearch-mcp-server@0.6.0"],
       "env": {
         "DESEARCH_API_KEY": "${DESEARCH_API_KEY}"
       }

@@ -1,13 +1,13 @@
 ---
 name: desearch
-description: Choose which Desearch MCP tool to call. Use when the task needs AI search, web search, a page as text or HTML, X posts, X trends, or finding people and creators on X, YouTube, LinkedIn, or TikTok.
+description: Choose which Desearch MCP tool to call. Use when the task needs AI search, web search, a page as text or HTML, X posts, X trends, finding people and creators on X, YouTube, LinkedIn, or TikTok, or finding companies and their public contacts and leaders (or enriching domains you already have).
 ---
 
 # Desearch
 
 Pick one Desearch tool from this list. Do not call a tool that is not registered.
 
-The host passes `DESEARCH_API_KEY` into the server. The plugin launches `npx -y desearch-mcp-server@0.3.3`. The search, page, and X tools send read requests. They do not post, follow, delete, or change an account. `people-search` starts a billed background search, and `people-search-control` pauses, resumes, or cancels one. For People Search, follow the `desearch-people-search` skill.
+The host passes `DESEARCH_API_KEY` into the server. The plugin launches `npx -y desearch-mcp-server@0.6.0`. The search, page, and X tools send read requests. They do not post, follow, delete, or change an account. `people-search` starts a billed background search, and `people-search-pause`, `people-search-resume`, and `people-search-cancel` pause, resume, or cancel one. `company-search` and `company-enrich` start billed background company tasks, and `company-search-pause`, `company-search-resume`, and `company-search-cancel` pause, resume, or cancel one. For People Search, follow the `desearch-people-search` skill. For Company Search and Company Enrich, follow the `desearch-company-search` skill.
 
 ## Which tool
 
@@ -30,10 +30,19 @@ The host passes `DESEARCH_API_KEY` into the server. The plugin launches `npx -y 
 - **X Trends** (`x-trends`): Trends for a location WOEID. Arguments: `woeid` (required), `count` (optional, 30 to 100).
 - **People Search** (`people-search`): Start a billed background search for people on `x`, `youtube`, `linkedin`, or `tiktok` who match a plain-language description. Arguments: `platform` and `query` (required), `count`, `min_score`, `exclude`, `idempotency_key`, and platform filters. See the `desearch-people-search` skill before calling it.
 - **People Search Status** (`people-search-status`): Status, progress, cost, and a page of people for one task. Arguments: `task_id` (required), `cursor`, `limit`, `include_people`.
-- **Control People Search** (`people-search-control`): Pause, resume, or cancel a task. Arguments: `task_id` and `action` (required).
+- **Pause People Search** (`people-search-pause`): Pause a task. Argument: `task_id` (required).
+- **Resume People Search** (`people-search-resume`): Resume a paused task with no new charge. Argument: `task_id` (required).
+- **Cancel People Search** (`people-search-cancel`): Stop a task for good; only people already delivered are billed. Argument: `task_id` (required). Cancel cannot be undone.
 - **List People Search Tasks** (`people-search-tasks`): Your searches, newest first. Arguments: `platform`, `status`, `limit`, `cursor`, all optional.
 - **List People Found** (`people-profiles`): Everyone your searches found on one platform, with filters. Free; it does not start a search. Arguments: `platform` (required) and optional filters.
+- **Company Search** (`company-search`): Start a billed background task that finds companies on the web matching a plain-language description, with each one's public emails, phones, social profiles, and leaders. Arguments: `query` (required), `count`, `min_score`, `exclude`, `countries`, `require`, `roles`, `infer_emails`, `verify_emails`, `metadata`, `idempotency_key`. See the `desearch-company-search` skill before calling it.
+- **Company Enrich** (`company-enrich`): Start a billed background task that collects the same data for domains you already have, one company per domain, with no fit score. Arguments: `domains` (required, 1 to 200), `roles`, `infer_emails`, `verify_emails`, `metadata`, `idempotency_key`. See the `desearch-company-search` skill before calling it.
+- **Company Search Status** (`company-search-status`): Status, progress, cost, and a page of companies for one Company Search or Company Enrich task. Arguments: `task_id` (required), `cursor`, `limit`, `include_companies`.
+- **Pause Company Search** (`company-search-pause`): Pause a company task. Argument: `task_id` (required).
+- **Resume Company Search** (`company-search-resume`): Resume a paused company task with no new charge. Argument: `task_id` (required).
+- **Cancel Company Search** (`company-search-cancel`): Stop a company task for good; only companies already delivered are billed. Argument: `task_id` (required). Cancel cannot be undone.
+- **List Company Search Tasks** (`company-search-tasks`): Your Company Search and Company Enrich tasks, newest first. Arguments: `type` (`search` or `enrich`), `status`, `limit`, `cursor`, `metadata`, all optional.
 
 ## When not to use these tools
 
-Skip Desearch when the task is only about files in the current project, or when the text you need is already in the conversation. These tools do not browse a logged-in site, post to X, contact the people they find, or change Desearch account settings.
+Skip Desearch when the task is only about files in the current project, or when the text you need is already in the conversation. These tools do not browse a logged-in site, post to X, contact the people or companies they find, or change Desearch account settings.
