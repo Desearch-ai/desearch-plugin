@@ -70,7 +70,7 @@ To try it locally, copy this repository to `~/.cursor/plugins/local/desearch`, t
 
 ## Skills
 
-`skills/desearch/SKILL.md` tells the agent which Desearch tool to call. It lists only the tools the server registers (31 in 0.4.0). `ai-search` `tools` uses the short ids `web`, `twitter`, `arxiv`, `wikipedia`, `hackernews`, and `reddit`. `youtube` is not accepted. The default is `web` and `twitter`.
+`skills/desearch/SKILL.md` tells the agent which Desearch tool to call. It lists only the tools the server registers (31 in 0.6.0). `ai-search` `tools` uses the short ids `web`, `twitter`, `arxiv`, `wikipedia`, `hackernews`, and `reddit`. `youtube` is not accepted. The default is `web` and `twitter`.
 
 `skills/desearch-people-search/SKILL.md` covers the seven People Search tools: `people-search` (billed), `people-search-status`, `people-search-pause`, `people-search-resume`, `people-search-cancel`, `people-search-tasks`, and `people-profiles`. It tells the agent to check the profiles library first, confirm the reservation with the user, send an `idempotency_key`, and poll status with the returned cursor. Prices and per-search minimums are listed in the skill.
 
