@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "desearch",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "AI search, X search, web search, page extraction, X trends, People Search for finding people and creators on X, YouTube, LinkedIn, and TikTok, and Company Search for finding companies and their public contacts and leaders.",
   "author": {
     "name": "Desearch AI",
