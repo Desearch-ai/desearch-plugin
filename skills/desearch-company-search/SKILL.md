@@ -7,7 +7,7 @@ description: Find companies that match a plain-language description, or enrich d
 
 Company Search returns companies, not pages. Describe the companies you want in plain language, for example "Series A fintech startups in Berlin building payment infrastructure". Desearch looks for their websites, reads each homepage, and scores how well each company fits. It then reads the company's contact, about, team, and imprint pages for emails, phones, and social profiles, finds its leaders (CEO, founders, CTO, and CFO by default) with their LinkedIn profiles, infers their emails from the company's address pattern, and checks every email. Company Enrich collects the same data for domains the user already has, one company per domain, without a fit score. Every contact keeps the page it came from. Public data only.
 
-The plugin launches `npx -y desearch-mcp-server@0.4.0`, which registers the seven tools below. For people or creators found by what they post, use the `desearch-people-search` skill instead.
+The plugin launches `npx -y desearch-mcp-server@0.6.0`, which registers the seven tools below. For people or creators found by what they post, use the `desearch-people-search` skill instead.
 
 ## Billing
 

@@ -7,7 +7,7 @@ description: Choose which Desearch MCP tool to call. Use when the task needs AI 
 
 Pick one Desearch tool from this list. Do not call a tool that is not registered.
 
-The host passes `DESEARCH_API_KEY` into the server. The plugin launches `npx -y desearch-mcp-server@0.4.0`. The search, page, and X tools send read requests. They do not post, follow, delete, or change an account. `people-search` starts a billed background search, and `people-search-pause`, `people-search-resume`, and `people-search-cancel` pause, resume, or cancel one. `company-search` and `company-enrich` start billed background company tasks, and `company-search-pause`, `company-search-resume`, and `company-search-cancel` pause, resume, or cancel one. For People Search, follow the `desearch-people-search` skill. For Company Search and Company Enrich, follow the `desearch-company-search` skill.
+The host passes `DESEARCH_API_KEY` into the server. The plugin launches `npx -y desearch-mcp-server@0.6.0`. The search, page, and X tools send read requests. They do not post, follow, delete, or change an account. `people-search` starts a billed background search, and `people-search-pause`, `people-search-resume`, and `people-search-cancel` pause, resume, or cancel one. `company-search` and `company-enrich` start billed background company tasks, and `company-search-pause`, `company-search-resume`, and `company-search-cancel` pause, resume, or cancel one. For People Search, follow the `desearch-people-search` skill. For Company Search and Company Enrich, follow the `desearch-company-search` skill.
 
 ## Which tool
 

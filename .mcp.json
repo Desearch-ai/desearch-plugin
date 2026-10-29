@@ -2,7 +2,7 @@
   "mcpServers": {
     "desearch": {
       "command": "npx",
-      "args": ["-y", "desearch-mcp-server@0.4.0"],
+      "args": ["-y", "desearch-mcp-server@0.6.0"],
       "env": {
         "DESEARCH_API_KEY": "${user_config.DESEARCH_API_KEY}"
       }
