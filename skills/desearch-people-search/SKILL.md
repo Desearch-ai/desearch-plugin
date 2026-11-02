@@ -7,7 +7,7 @@ description: Find people and creators on X, YouTube, LinkedIn, or TikTok who mat
 
 People Search returns people, not posts. Describe who you want in plain language, for example "Skincare creators who review sunscreen". Desearch searches public posts, videos, and profiles on one platform, reads each matching profile, and scores how well each person fits. Each person comes with a fit score, why they matched, their audience, and public contacts and links. Public data only.
 
-The plugin launches `npx -y desearch-mcp-server@0.6.0`, which registers the seven tools below. For companies rather than people, use the `desearch-company-search` skill. For posts that match a keyword, use `x-search` or `ai-search` instead.
+The plugin launches `npx -y desearch-mcp-server@0.8.0`, which registers the eight tools below. For companies rather than people, use the `desearch-company-search` skill. For posts that match a keyword, use `x-search` or `ai-search` instead.
 
 ## Billing
 
@@ -20,7 +20,7 @@ The plugin launches `npx -y desearch-mcp-server@0.6.0`, which registers the seve
 | `linkedin` | LinkedIn members | $0.05 per profile | 2 profiles |
 | `tiktok` | TikTok creators | $0.05 per creator | 2 creators |
 
-Status, results, task control, the task list, and the profiles library are free. The task's `reserved_cost_usd` and `final_cost_usd` are the amounts that count.
+Status, results, task control, the task list, the profiles library, and exports are free. The task's `reserved_cost_usd` and `final_cost_usd` are the amounts that count.
 
 ## Workflow
 
@@ -43,12 +43,13 @@ Status, results, task control, the task list, and the profiles library are free.
 - **Cancel People Search** (`people-search-cancel`): Argument: `task_id` (required). Cancel cannot be undone; the user pays only for the people already delivered.
 - **List People Search Tasks** (`people-search-tasks`): The user's searches, newest first. Arguments: `platform`, `status` (list, for example `["running", "paused"]`), `limit` (1 to 100), `cursor`, all optional. A new search is refused with 429 while too many are queued, running, or paused.
 - **List People Found** (`people-profiles`): Everyone the user's searches found on one platform, one entry per person, with the search that found them (`found_by`). Arguments: `platform` (required), `q`, `sort` (`score`, `recent`, `audience`), `limit` (1 to 200), `cursor`, `has` (list of `email`, `website`, `x`, `linkedin`, `instagram`, `youtube`, `tiktok`), `min_audience`, `max_audience`, `min_score`, `location`, `verified` (X and TikTok only). People from searches that ended more than 30 days ago are left out.
+- **Export People Found** (`people-search-export`): One search (`task_id`) or everyone found on a platform (`platform` without `task_id`) as CSV or JSON Lines text. Arguments: `task_id` or `platform`, `format` (`csv` or `jsonl`, default `csv`), the `people-profiles` filters, and `max_rows` (1 to 1000, default 100). The reply starts with a note that says how many rows were cut.
 
 ## Results
 
 Each person has `name`, `handle`, `url`, `platform`, `audience` (followers, or subscribers on YouTube), `location`, `score` (0 to 100), `why` they matched, `reasons`, public `contacts` and `links`, and an `evidence_url`. LinkedIn people also have `headline` and `company`; X and TikTok people have `verified`. A missing field means the platform did not report it, not zero.
 
-The MCP tools do not export files. To download a task as CSV or JSON Lines, use the Desearch Console or `GET /desearch/people/tasks/{task_id}/export?format=csv` on the API. Results stay available for 30 days after a search ends.
+`people-search-export` returns at most 1,000 rows as text. For the whole file, use the Desearch Console or `GET /desearch/people/tasks/{task_id}/export?format=csv` on the API. Results stay available for 30 days after a search ends.
 
 ## When not to use these tools
 

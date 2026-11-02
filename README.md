@@ -1,26 +1,26 @@
 # Desearch plugin
 
-Plugin bundle for Claude Code, Cursor, and Grok Build. It loads the npm package `desearch-mcp-server`. The tools call Desearch for AI search, X search, web search, page extraction, X trends, People Search (finding people and creators on X, YouTube, LinkedIn, and TikTok), and Company Search (finding companies, or enriching domains you have, with their public contacts and leaders). This repository is the plugin root. It does not publish the server.
+Plugin bundle for Claude Code, Cursor, and Grok Build. It loads the npm package `desearch-mcp-server`. The tools call Desearch for AI search, X search, web search, the Search API, page extraction, X trends, public YouTube (videos, transcripts, comments, channels), Reddit, Threads, TikTok, Facebook, and Instagram data, People Search (finding people and creators on X, YouTube, LinkedIn, and TikTok), and Company Search (finding companies, or enriching domains you have, with their public contacts and leaders). This repository is the plugin root. It does not publish the server.
 
 ## Requirements
 
 - Node.js 20.18.1 or newer (Node 22 is supported; Node 18 is not), so `npx` can start the server
 - A Desearch API key from [console.desearch.ai/api-keys](https://console.desearch.ai/api-keys)
 
-The MCP config launches `npx -y desearch-mcp-server@0.6.0` and passes `DESEARCH_API_KEY` into that process. The bundle does not contain a key.
+The MCP config launches `npx -y desearch-mcp-server@0.8.0` and passes `DESEARCH_API_KEY` into that process. The bundle does not contain a key.
 
 Claude Code asks for the key through `userConfig`. Cursor asks for it through plugin variables. To run the server yourself:
 
 ```bash
 export DESEARCH_API_KEY="your-api-key"
-npx -y desearch-mcp-server@0.6.0
+npx -y desearch-mcp-server@0.8.0
 ```
 
 ## Data flow and privacy
 
-Search queries, URLs, X/Twitter identifiers, People Search descriptions, and Company Search descriptions and domains the user asks about are sent to the Desearch API (https://api.desearch.ai) using the user's own API key. Results return to the assistant. People Search results are public profile data (name, handle, bio, audience, public links, and contacts such as an email listed in a bio). Company Search results are public company data: what a company publishes on its own site, what web search returns, and public LinkedIn profiles of its leaders, including emails inferred from the company's address pattern (marked `source: inferred`). Desearch keeps both in the user's account for 30 days after a task ends. The plugin itself stores nothing.
+Search queries, URLs, X/Twitter identifiers, YouTube, Reddit, Threads, TikTok, Facebook, and Instagram identifiers (video IDs, channel handles, subreddit names, usernames, post URLs), People Search descriptions, and Company Search descriptions and domains the user asks about are sent to the Desearch API (https://api.desearch.ai) using the user's own API key. Results return to the assistant. People Search results are public profile data (name, handle, bio, audience, public links, and contacts such as an email listed in a bio). Company Search results are public company data: what a company publishes on its own site, what web search returns, and public LinkedIn profiles of its leaders, including emails inferred from the company's address pattern (marked `source: inferred`). Desearch keeps both in the user's account for 30 days after a task ends. The plugin itself stores nothing.
 
-Most tools are billed per request. `people-search` is different: it starts a background search that reserves `count` people at the platform's per-person price and settles to the people it delivers. A search that finds no one is free. `company-search` and `company-enrich` work the same way per company: they reserve `count` companies (Company Search) or one company per domain (Company Enrich) and settle to the companies they deliver; a task that delivers none is free. Status, results, task control, task lists, and the profiles library are free.
+Most tools are billed per request. The `youtube`, `reddit`, and `threads` tools cost $2.07 per 1,000 requests, an empty page included; a 404, a 422, and a 5xx are free. The `tiktok`, `facebook`, and `instagram` tools cost $2.07 per 1,000 items returned. `people-search` is different: it starts a background search that reserves `count` people at the platform's per-person price and settles to the people it delivers. A search that finds no one is free. `company-search` and `company-enrich` work the same way per company: they reserve `count` companies (Company Search) or one company per domain (Company Enrich) and settle to the companies they deliver; a task that delivers none is free. Status, results, task control, task lists, the profiles library, and `people-search-export` are free.
 
 - Desearch: https://desearch.ai
 - Privacy policy: https://www.desearch.ai/privacy
@@ -70,11 +70,15 @@ To try it locally, copy this repository to `~/.cursor/plugins/local/desearch`, t
 
 ## Skills
 
-`skills/desearch/SKILL.md` tells the agent which Desearch tool to call. It lists only the tools the server registers (31 in 0.6.0). `ai-search` `tools` uses the short ids `web`, `twitter`, `arxiv`, `wikipedia`, `hackernews`, and `reddit`. `youtube` is not accepted. The default is `web` and `twitter`.
+`skills/desearch/SKILL.md` tells the agent which Desearch tool to call. It lists only the tools the server registers (39 in 0.8.0). `ai-search` `tools` uses the short ids `web`, `twitter`, `arxiv`, `wikipedia`, `hackernews`, and `reddit`. `youtube` is not accepted. The default is `web` and `twitter`.
 
 `skills/desearch-people-search/SKILL.md` covers the seven People Search tools: `people-search` (billed), `people-search-status`, `people-search-pause`, `people-search-resume`, `people-search-cancel`, `people-search-tasks`, and `people-profiles`. It tells the agent to check the profiles library first, confirm the reservation with the user, send an `idempotency_key`, and poll status with the returned cursor. Prices and per-search minimums are listed in the skill.
 
 `skills/desearch-company-search/SKILL.md` covers the seven Company Search tools: `company-search` and `company-enrich` (billed), `company-search-status`, `company-search-pause`, `company-search-resume`, `company-search-cancel`, and `company-search-tasks`. It tells the agent to check the user's earlier tasks first, confirm the reservation, send an `idempotency_key`, poll status with the returned cursor, and read every company once more after the task ends, because later stages fill companies in. Prices and per-task minimums are listed in the skill.
+
+`skills/desearch-social/SKILL.md` covers the six social tools: `youtube`, `reddit`, `threads`, `tiktok`, `facebook`, and `instagram`. It gives each action's arguments and enums, the paging rule (send `next_cursor` back unchanged as `cursor` with the same action and target; Threads never pages), what each call costs, and when to call `transcript` instead of `video`.
+
+`skills/desearch-people-search/SKILL.md` also covers `people-search-export` (CSV or JSON Lines text, up to 1,000 rows).
 
 desearch-mcp-server 0.4.0 replaced `people-search-control` with `people-search-pause`, `people-search-resume`, and `people-search-cancel`, so the skills name those three tools.
 
@@ -82,7 +86,7 @@ desearch-mcp-server 0.4.0 replaced `people-search-control` with `people-search-p
 
 Manifest: `.grok-plugin/plugin.json`.
 MCP config: `mcp.json`, set with `"mcpServers": "./mcp.json"`. A string path replaces the default `.mcp.json` load, so Grok Build reads `${DESEARCH_API_KEY}` from `mcp.json` instead of `${user_config.DESEARCH_API_KEY}`.
-Skills: `"skills": "./skills/desearch"`. That path points at the skill directory, and the default `skills/` scan still applies, so `skills/desearch-people-search` and `skills/desearch-company-search` load too.
+Skills: `"skills": "./skills/desearch"`. That path points at the skill directory, and the default `skills/` scan still applies, so `skills/desearch-people-search`, `skills/desearch-company-search`, and `skills/desearch-social` load too.
 
 Export the key in your environment, then install:
 
