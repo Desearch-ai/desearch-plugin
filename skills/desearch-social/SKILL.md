@@ -7,7 +7,7 @@ description: Read public YouTube, Reddit, Threads, TikTok, Facebook, and Instagr
 
 Six tools read public social data, one per platform: `youtube`, `reddit`, `threads`, `tiktok`, `facebook`, and `instagram`. Each takes an `action` that picks one public route, plus that action's arguments. A missing argument, or one the action does not take, is refused before any request with a message that lists what the action takes, so read the message and call again. They only read: they do not post, comment, follow, or change an account.
 
-The plugin launches `npx -y desearch-mcp-server@0.8.0`, which registers these tools. To find people or creators who match a description, use the `desearch-people-search` skill instead. For X posts, use `x-search` and the other X tools.
+The plugin launches `npx -y desearch-mcp-server@0.9.0`, which registers these tools. To find people or creators who match a description, use the `desearch-people-search` skill instead. For X posts, use `x-search` and the other X tools.
 
 ## Billing
 
