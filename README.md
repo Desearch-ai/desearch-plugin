@@ -84,8 +84,8 @@ desearch-mcp-server 0.4.0 replaced `people-search-control` with `people-search-p
 
 ## Grok Build
 
-Manifest: `.grok-plugin/plugin.json`.
-MCP config: `mcp.json`, set with `"mcpServers": "./mcp.json"`. A string path replaces the default `.mcp.json` load, so Grok Build reads `${DESEARCH_API_KEY}` from `mcp.json` instead of `${user_config.DESEARCH_API_KEY}`.
+Manifest: `.grok-plugin/plugin.json`. Grok Build 1.0.77 reads the root `plugin.json` before it, so both set the MCP config.
+MCP config: `mcp.json`, set with `"mcpServers": "./mcp.json"` in `plugin.json` and `.grok-plugin/plugin.json`. A string path replaces the default `.mcp.json` load, so Grok Build reads `${DESEARCH_API_KEY}` from `mcp.json` instead of `${user_config.DESEARCH_API_KEY}`. Without it in the root `plugin.json`, Grok Build 1.0.77 loads `.mcp.json` and the server gets the literal `${user_config.DESEARCH_API_KEY}`. `.claude-plugin/plugin.json` sets no `mcpServers`, so Claude Code keeps loading `.mcp.json`.
 Skills: `"skills": "./skills/desearch"`. That path points at the skill directory, and the default `skills/` scan still applies, so `skills/desearch-people-search`, `skills/desearch-company-search`, and `skills/desearch-social` load too.
 
 Export the key in your environment, then install:

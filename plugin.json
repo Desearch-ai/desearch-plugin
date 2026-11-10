@@ -14,5 +14,6 @@
     "desearch",
     "search",
     "mcp"
-  ]
+  ],
+  "mcpServers": "./mcp.json"
 }
