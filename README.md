@@ -1,6 +1,6 @@
 # Desearch plugin
 
-Plugin bundle for Claude Code, Cursor, and Grok Build. Claude connects to the hosted Desearch MCP service over HTTPS. Cursor and Grok Build load the npm package `desearch-mcp-server`. The tools call Desearch for AI search, X search, web search, the Search API, page extraction, X trends, public YouTube (videos, transcripts, comments, channels), Reddit, Threads, TikTok, Facebook, and Instagram data, People Search (finding people and creators on X, YouTube, LinkedIn, and TikTok), and Company Search (finding companies, or enriching domains you have, with their public contacts and leaders). This repository is the plugin root. It does not publish the server.
+Plugin bundle for Claude Code, Cursor, and Grok Build. Claude connects to the hosted Desearch MCP service over HTTPS. Cursor and Grok Build load the npm package `desearch-mcp-server`. The tools call Desearch for AI search, X search, web search, the Search API, page extraction, X trends, public YouTube (videos, transcripts, comments, channels), Reddit, Threads, TikTok, Facebook, and Instagram data, People Search (finding people and creators on X, YouTube, LinkedIn, and TikTok), and Company Search (finding companies, or enriching domains you have, with their public contacts and leaders). The Claude plugin root is `plugins/desearch`; other hosts use the repository root. It does not publish the server.
 
 ## Requirements
 
@@ -19,34 +19,14 @@ Most tools are billed per request. The `youtube`, `reddit`, and `threads` tools 
 
 ## Claude Code
 
-Manifest: `.claude-plugin/plugin.json` ([plugin manifest](https://code.claude.com/docs/en/plugins-reference)).
-Marketplace: `.claude-plugin/marketplace.json` ([plugin marketplaces](https://code.claude.com/docs/en/plugin-marketplaces)).
-MCP config: `.mcp.json` at the plugin root ([MCP servers in plugins](https://code.claude.com/docs/en/plugins-reference#mcp-servers)).
-
-The default `.mcp.json` declares a Streamable HTTP server with `type: "http"` and `url: "https://mcp.desearch.ai/mcp"`. It has no local command, environment variables, static authorization header, or shell helper. Claude discovers the service's OAuth metadata and uses its authorization-code flow with PKCE. The host manages credentials and refresh; the plugin does not store tokens. See [remote MCP authentication](https://code.claude.com/docs/en/mcp#authenticate-with-remote-mcp-servers).
-
-Add the marketplace, then install the plugin:
+The Claude marketplace entry in `.claude-plugin/marketplace.json` sources the self-contained `plugins/desearch` package. Its manifest, remote OAuth MCP configuration, four skills, README, license, and assets are inside that folder. See the [Claude installation and authentication instructions](plugins/desearch/README.md).
 
 ```text
 /plugin marketplace add Desearch-ai/desearch-plugin
 /plugin install desearch@desearch
 ```
 
-Run `/mcp`, select the plugin's Desearch server, and follow the authentication link to the Desearch authorization page. Enter your Desearch API key there and continue to authorize the connection. The service checks the key and keeps it on the server; it is not sent to the localhost callback. If the browser does not open, copy the link into your browser. Complete authorization before making a search. When authorization expires or is rejected, use `/mcp` to authenticate again. Enter the key only on the HTTPS Desearch authorization page. Do not paste it into a chat prompt, a repository file, or an environment variable for this Claude configuration.
-
-From the command line, install with `claude plugin install desearch@desearch`. The Claude plugin v0.5.1 no longer asks for `userConfig.DESEARCH_API_KEY`; an older local installation may still have that saved setting. Updating the plugin uses OAuth instead.
-
-Load this directory while you develop:
-
-```bash
-claude --plugin-dir .
-```
-
-Check the manifest:
-
-```bash
-claude plugin validate . --strict
-```
+From the repository root, develop with `claude --plugin-dir ./plugins/desearch` and validate with `claude plugin validate ./plugins/desearch --strict`. The repository root is a marketplace, not a second Claude plugin.
 
 ## Cursor
 
@@ -56,7 +36,7 @@ MCP config: `mcp.json`, set with `"mcpServers": "./mcp.json"` so Cursor loads th
 
 `mcp.json` sets `DESEARCH_API_KEY` from the plugin variable `${DESEARCH_API_KEY}`. The name is declared under `variables` in `.cursor-plugin/plugin.json`. Users set the value in the dashboard under Plugins, then Configure. Plugin config does not use shell `${env:...}` placeholders ([Variables](https://cursor.com/docs/reference/plugins#variables)).
 
-User and project `mcp.json` files use a different interpolation syntax; see [Cursor MCP configuration](https://cursor.com/docs/mcp). Cursor marketplace installs should follow `mcp.json`. The root `.mcp.json` is now the Claude remote OAuth configuration, so importing it directly does not exercise the Cursor plugin's local-server configuration.
+User and project `mcp.json` files use a different interpolation syntax; see [Cursor MCP configuration](https://cursor.com/docs/mcp). Cursor marketplace installs should follow `mcp.json`. Claude's separate remote OAuth configuration is `plugins/desearch/.mcp.json`; Cursor continues to use the root `mcp.json`.
 
 To try it locally, copy this repository to `~/.cursor/plugins/local/desearch`, then run Developer: Reload Window. Open Customize and confirm the Desearch skills and MCP server. Local plugin imports must be allowed.
 
@@ -77,7 +57,7 @@ desearch-mcp-server 0.4.0 replaced `people-search-control` with `people-search-p
 ## Grok Build
 
 Manifest: `.grok-plugin/plugin.json`. Grok Build 1.0.77 reads the root `plugin.json` before it, so both set the MCP config.
-MCP config: `mcp.json`, set with `"mcpServers": "./mcp.json"` in `plugin.json` and `.grok-plugin/plugin.json`. These explicit paths keep Grok Build on its existing local launcher and `${DESEARCH_API_KEY}` configuration. `.claude-plugin/plugin.json` sets no `mcpServers`, so Claude loads the remote `.mcp.json` instead.
+MCP config: `mcp.json`, set with `"mcpServers": "./mcp.json"` in `plugin.json` and `.grok-plugin/plugin.json`. These explicit paths keep Grok Build on its existing local launcher and `${DESEARCH_API_KEY}` configuration. Claude loads its separate remote configuration from `plugins/desearch/.mcp.json`.
 Skills: `"skills": "./skills/desearch"`. That path points at the skill directory, and the default `skills/` scan still applies, so `skills/desearch-people-search`, `skills/desearch-company-search`, and `skills/desearch-social` load too.
 
 Export the key in your environment, then install:
