@@ -4,7 +4,7 @@ Plugin bundle for Claude Code, Cursor, and Grok Build. Claude connects to the ho
 
 ## Requirements
 
-Claude uses the remote MCP endpoint `https://mcp.desearch.ai/mcp` and the host's OAuth sign-in flow. No Node.js, local MCP server, API-key prompt, or credential environment variable is required for Claude.
+Claude uses the remote MCP endpoint `https://mcp.desearch.ai/mcp` and the host's OAuth sign-in flow. No Node.js, local MCP server, plugin API-key setting, or credential environment variable is required for Claude. The Desearch authorization page asks for a Desearch API key from [console.desearch.ai/api-keys](https://console.desearch.ai/api-keys) before granting OAuth access.
 
 Cursor and Grok Build use the separate `mcp.json` configuration and require Node.js 20.18.1 or newer (Node 22 is supported; Node 18 is not) and a Desearch API key from [console.desearch.ai/api-keys](https://console.desearch.ai/api-keys). Their launcher remains pinned to `desearch-mcp-server@0.9.0`. The bundle contains no key or server implementation.
 
@@ -32,7 +32,7 @@ Add the marketplace, then install the plugin:
 /plugin install desearch@desearch
 ```
 
-Run `/mcp`, select the plugin's Desearch server, and follow the authentication link to sign in and authorize Desearch. If the browser does not open, copy the link into your browser. Complete authorization before making a search. When authorization expires or is rejected, use `/mcp` to authenticate again. Do not paste an API key into a prompt, a repository file, or an environment variable for this Claude configuration.
+Run `/mcp`, select the plugin's Desearch server, and follow the authentication link to the Desearch authorization page. Enter your Desearch API key there and continue to authorize the connection. The service checks the key and keeps it on the server; it is not sent to the localhost callback. If the browser does not open, copy the link into your browser. Complete authorization before making a search. When authorization expires or is rejected, use `/mcp` to authenticate again. Enter the key only on the HTTPS Desearch authorization page. Do not paste it into a chat prompt, a repository file, or an environment variable for this Claude configuration.
 
 From the command line, install with `claude plugin install desearch@desearch`. The Claude plugin v0.5.1 no longer asks for `userConfig.DESEARCH_API_KEY`; an older local installation may still have that saved setting. Updating the plugin uses OAuth instead.
 
