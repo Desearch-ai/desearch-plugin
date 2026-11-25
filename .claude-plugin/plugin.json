@@ -1,0 +1,14 @@
+{
+  "name": "desearch",
+  "displayName": "Desearch",
+  "version": "0.5.1",
+  "description": "AI search, X search, web search, the Search API, page extraction, X trends, public YouTube, Reddit, Threads, TikTok, Facebook, and Instagram data, People Search for finding people and creators on X, YouTube, LinkedIn, and TikTok, and Company Search for finding companies and their public contacts and leaders.",
+  "author": {
+    "name": "Desearch AI",
+    "url": "https://www.desearch.ai"
+  },
+  "homepage": "https://desearch.ai",
+  "repository": "https://github.com/Desearch-ai/desearch-plugin",
+  "license": "MIT",
+  "keywords": ["desearch", "search", "mcp"]
+}

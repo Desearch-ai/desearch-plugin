@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "desearch": {
+      "type": "http",
+      "url": "https://mcp.desearch.ai/mcp"
+    }
+  }
+}
