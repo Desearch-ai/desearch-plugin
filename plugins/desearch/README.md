@@ -15,6 +15,16 @@ Most tools are billed per request. The `youtube`, `reddit`, and `threads` tools 
 - Desearch: https://desearch.ai
 - Privacy policy: https://www.desearch.ai/privacy
 
+## Data Sources, Legal Basis & Opt-Out
+
+People Search and Company Search return named people's business contact channels at scale. These include a public email or other contact listed on a profile, and emails inferred from a company's address pattern (marked `source: inferred`).
+
+**Data sources.** This information comes from publicly available web and business sources: public profiles on platforms such as X, YouTube, LinkedIn and TikTok; information a company publishes on its own website; and what public web search returns.
+
+**Legal basis.** The legal basis for collecting, holding and providing that business-contact information is legitimate interests.
+
+**Opt-out and removal.** If you are a person listed in People Search or Company Search results and you want your data removed, send an opt-out or removal request to support@desearch.ai or follow the instructions at https://www.desearch.ai/privacy. We respond within 30 days.
+
 ## Claude Code
 
 Manifest: `.claude-plugin/plugin.json` ([plugin manifest](https://code.claude.com/docs/en/plugins-reference)).
